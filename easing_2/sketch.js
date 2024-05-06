@@ -1,6 +1,6 @@
-let rectWidth = 50; // Initial width of the rectangle
-let targetWidth = 50; // Target width for the rectangle to animate towards
-let easing = 0.01; // Easing factor for smooth motion
+let rectWidth = 50;
+let targetWidth = 50;
+let easing = 0.01;
 
 function setup() {
   createCanvas(720, 400);
@@ -24,5 +24,5 @@ function draw() {
 
 // Update the target width of the rectangle based on mouse movements
 function mouseMoved() {
-  targetWidth = map(mouseX, 0, width, 20, 200); // Map mouse x-coordinate to a target width range
+  targetWidth = map(mouseX, 0, width, 20, 200); // Map mouse x-coordinate to a target
 }
