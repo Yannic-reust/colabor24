@@ -30,7 +30,7 @@ function draw() {
       let c = img.get(x, y);
 
       // Add a red tint by increasing the red component
-      c[0] = min(255, c[0] + 50);
+      c[0] = min(mouseY, c[0] + 50);
 
       fill(c);
 
