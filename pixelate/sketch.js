@@ -27,7 +27,12 @@ function draw() {
   for (let y = 0; y < img.height; y += cells) {
     for (let x = 0; x < img.width; x += cells) {
       // Get the color at (x, y)
-      fill(img.get(x, y));
+      let c = img.get(x, y);
+
+      // Add a red tint by increasing the red component
+      c[0] = min(255, c[0] + 50);
+
+      fill(c);
 
       // Draw a rectangle at (x, y) and the size of a cell
       rect(x, y, cells, cells);
