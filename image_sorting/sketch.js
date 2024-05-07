@@ -6,7 +6,7 @@ let img;
 let changes;
 
 function preload() {
-  img = loadImage("./image_2.jpg");
+  img = loadImage("./image.jpg");
 }
 
 function setup() {

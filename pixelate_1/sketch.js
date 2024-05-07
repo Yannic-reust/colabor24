@@ -18,7 +18,7 @@ function setup() {
 
 function draw() {
   // Map the mouse X from [0-width] to [10-80]
-  cells = map(20, 0, width, 10, 80);
+  cells = map(50, 0, width, 10, 80);
 
   // Round to the nearest 10
   cells = ceil(cells / 10) * 10;
