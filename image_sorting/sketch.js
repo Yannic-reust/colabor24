@@ -2,14 +2,11 @@ let direction = "vertical";
 let threshold = 50;
 let pixelDistance = 1;
 
-let editable = true;
-let editRadius = 30;
-
 let img;
 let changes;
 
 function preload() {
-  img = loadImage("./image.jpg");
+  img = loadImage("./image_2.jpg");
 }
 
 function setup() {
@@ -21,17 +18,13 @@ function setup() {
 
 function draw() {
   image(img, 0, 0);
-  if (editable) {
-    push();
-    stroke(0, 255, 0);
-    noFill();
-    circle(mouseX, mouseY, editRadius * 2);
-    pop();
-  }
 }
 
 function generatePixelSort() {
+  // Detect pixel changes based on the specified threshold, distance, and direction
   changes = detectPixelChanges(img, threshold, pixelDistance, direction, false);
+
+  // Loop through detected changes and apply pixel sorting
   for (let i = 0; i < changes.length; i++) {
     if (i < changes.length - 1) {
       pixelSortTo(
@@ -46,6 +39,8 @@ function generatePixelSort() {
       pixelSort(img, changes[i].x, changes[i].y, direction);
     }
   }
+
+  // Update the pixels of the image after sorting
   img.updatePixels();
 }
 
@@ -79,7 +74,6 @@ function detectPixelChanges(
           col[2]
         );
         if (d > threshold) {
-          //point(direction.x ? i : j, direction.x ? j : i);
           results.push(createVector(direction.x ? i : j, direction.x ? j : i));
           if (onlyFirst) break;
         }
@@ -89,6 +83,7 @@ function detectPixelChanges(
   return results;
 }
 
+// Function to get the color value of a pixel in the image
 function getPixelValue(img, x, y) {
   if (x < 0 || x > img.width - 1 || y < 0 || y > img.height - 1) return null;
   if (!img.pixels.length) img.loadPixels();
@@ -100,6 +95,7 @@ function getPixelValue(img, x, y) {
   return [r, g, b, a];
 }
 
+// Function to set the color value of a pixel in the image
 function setPixelValue(img, x, y, colR, colG, colB, colA = 255) {
   if (x < 0 || x > img.width - 1 || y < 0 || y > img.height - 1) return null;
   if (!img.pixels.length) img.loadPixels();
@@ -110,6 +106,7 @@ function setPixelValue(img, x, y, colR, colG, colB, colA = 255) {
   img.pixels[i + 3] = colA;
 }
 
+// Function to perform pixel sorting in a specified direction
 function pixelSort(img, x, y, direction = "vertical") {
   direction =
     direction == "horizontal" ? createVector(1, 0) : createVector(0, 1);
@@ -136,6 +133,7 @@ function pixelSort(img, x, y, direction = "vertical") {
   }
 }
 
+// Function to perform pixel sorting from one point to another in a specified direction
 function pixelSortTo(img, x1, y1, x2, y2, direction = "vertical") {
   direction =
     direction == "horizontal" ? createVector(1, 0) : createVector(0, 1);
@@ -165,8 +163,7 @@ function pixelSortTo(img, x1, y1, x2, y2, direction = "vertical") {
   }
 }
 
+// Function to define the sorting order for pixel sorting
 function sortFunction(a, b) {
-  //return brightness(color(b[0], b[1], b[2])) - brightness(color(a[0], a[1], a[2]));
-  //return b[0] * b[1] * b[2] - a[0] * a[1] * a[2];
   return -(b[0] - a[0] + b[1] - a[2] + b[1] - a[1]);
 }
