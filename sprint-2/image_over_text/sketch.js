@@ -12,6 +12,7 @@ let imgHeight = 150;
 
 function preload() {
   img = loadImage("./image.jpg");
+  confetti = loadImage("./confetti.gif");
 }
 
 function setup() {
@@ -23,19 +24,16 @@ function draw() {
   background(220);
   image(img, imgX, imgY, imgWidth, imgHeight);
 
-  let dynamicBoxW = 50; // Add some padding around the text
+  let dynamicBoxW = 50;
   let dynamicBoxH = 20;
 
   fill(redValue, 0, 0);
   rect(boxX, boxY, dynamicBoxW, dynamicBoxH);
 
-  // Add text inside the dynamic box
-  fill(255); // Set text color to white
-  textAlign(CENTER, CENTER); // Center align text
-  textSize(12); // Set text size
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(12);
   text("Box 1", boxX + dynamicBoxW / 2, boxY + dynamicBoxH / 2);
-
-  //rect(boxX2, boxY2, boxW2, boxH2);
 
   if (
     imgX >= boxX &&
@@ -43,8 +41,10 @@ function draw() {
     imgY >= boxY &&
     imgY <= boxY + dynamicBoxH
   ) {
-    redValue = 0;
+    image(img, imgX, imgY, 300, 200);
+    //confetti
   } else {
-    redValue = 255;
+    confetti.resize(0, 0);
+    //no confetti
   }
 }
