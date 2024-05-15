@@ -2,38 +2,23 @@ var wW;
 var wH;
 
 let imgmouse;
-let xmouse;
-let ymouse;
 let mouseWidth = 200;
 let mouseHeight = 100;
 
-var mouseboxX;
-var mouseboxY;
-
-var mouseboxW = 15;
-var mouseboxH = 13;
-
 let imgsausage;
-let xsausage;
-let ysausage;
 let sausageWidth = 200;
 let sausageHeight = 150;
 
-var sausageboxX;
-var sausageboxY;
-var sausageboxW = 15;
-var sausageboxH = 13;
-
 let imgbird;
-let xbird;
-let ybird;
 let birdWidth = 200;
 let birdHeight = 150;
 
-var birdboxX;
-var birdboxY;
-var birdboxW = 15;
-var birdboxH = 13;
+let dynamicBoxW = 150;
+let dynamicBoxH = 45;
+
+let confetti;
+let images = [];
+let textPositions = [];
 
 function preload() {
   confetti = loadImage("./confetti.gif");
@@ -50,123 +35,85 @@ function setup() {
   imgsausage.resize(300, 200);
   imgbird.resize(300, 200);
   noStroke();
-  frameRate(2);
+  frameRate(0.55);
 
   wW = windowWidth - 300;
   wH = windowHeight - 200;
+
+  // Initialize image positions
+  for (let i = 0; i < 3; i++) {
+    images.push({
+      x: random(wW),
+      y: random(wH),
+    });
+
+    textPositions.push({
+      x: random(wW),
+      y: random(wH),
+    });
+  }
 }
+
 function draw() {
-  mouseboxX = random(wW);
-  mouseboxY = random(wH);
-  //testing
-  /*mouseboxX = 80;
-  mouseboxY = 80;*/
+  background(220);
 
-  sausageboxX = random(wW);
-  sausageboxY = random(wH);
+  for (let i = 0; i < images.length; i++) {
+    let imageObj = images[i];
+    let textPos = textPositions[i];
 
-  birdboxX = random(wW);
-  birdboxY = random(wH);
+    // Update image and text positions
+    imageObj.x = random(wW);
+    imageObj.y = random(wH);
+    textPos.x = random(wW);
+    textPos.y = random(wH);
 
-  xmouse = random(wW);
-  ymouse = random(wH);
-  //testing
-  /*xmouse = 80;
-  ymouse = 80;*/
+    // Display images
+    if (i === 0) {
+      image(imgmouse, imageObj.x, imageObj.y, mouseWidth, mouseHeight);
+    } else if (i === 1) {
+      image(imgsausage, imageObj.x, imageObj.y, sausageWidth, sausageHeight);
+    } else if (i === 2) {
+      image(imgbird, imageObj.x, imageObj.y, birdWidth, birdHeight);
+    }
 
-  xsausage = random(wW);
-  ysausage = random(wH);
+    // Display labels
+    if (i === 0) {
+      drawLabel("mouse", textPos.x, textPos.y);
+    } else if (i === 1) {
+      drawLabel("sausage", textPos.x, textPos.y);
+    } else if (i === 2) {
+      drawLabel("bird", textPos.x, textPos.y);
+    }
 
-  xbird = random(wW);
-  ybird = random(wH);
+    // Check if the text label overlaps with the image and display confetti
+    let imageCenterX = imageObj.x + imgmouse.width / 2;
+    let imageCenterY = imageObj.y + imgmouse.height / 2;
+    let textCenterX = textPos.x + dynamicBoxW / 2;
+    let textCenterY = textPos.y + dynamicBoxH / 2;
 
-  //mouse
-  image(imgmouse, xmouse, ymouse, mouseWidth, mouseHeight);
+    let distance = dist(imageCenterX, imageCenterY, textCenterX, textCenterY);
 
-  let mousedynamicBoxW = 150; // Add some padding around the text
-  let mousedynamicBoxH = 45;
-
-  fill(50);
-  rect(mouseboxX, mouseboxY, mousedynamicBoxW, mousedynamicBoxH);
-
-  // Add text inside the dynamic box
-  fill(0); // Set text color to white
-  textAlign(CENTER, CENTER); // Center align text
-  textSize(50); // Set text size
-  text(
-    "mouse",
-    mouseboxX + mousedynamicBoxW / 2,
-    mouseboxY + mousedynamicBoxH / 2
-  );
-
-  //rect(boxX2, boxY2, boxW2, boxH2);
-
-  if (
-    xmouse >= mouseboxX &&
-    xmouse <= mouseboxX + mousedynamicBoxW &&
-    ymouse >= mouseboxY &&
-    ymouse <= mouseboxY + mousedynamicBoxH
-  ) {
-    image(confetti, xmouse, ymouse, windowWidth / 2, windowHeight / 2);
-  } else {
+    if (
+      distance < imgmouse.width / 2 + dynamicBoxW / 2 &&
+      distance < imgmouse.height / 2 + dynamicBoxH / 2
+    ) {
+      image(
+        confetti,
+        imageObj.x,
+        imageObj.y,
+        windowWidth / 2,
+        windowHeight / 2
+      );
+    }
   }
-  // sausage
-  image(imgsausage, xsausage, ysausage, sausageWidth, sausageHeight);
+}
 
-  let sausagedynamicBoxW = 190; // Add some padding around the text
-  let sausagedynamicBoxH = 45;
+function drawLabel(label, x, y) {
+  fill(255, 0);
+  rect(x, y, dynamicBoxW, dynamicBoxH);
 
-  fill(55);
-
-  rect(sausageboxX, sausageboxY, sausagedynamicBoxW, sausagedynamicBoxH);
-
-  // Add text inside the dynamic box
-  fill(0); // Set text color to white
-  textAlign(CENTER, CENTER); // Center align text
-  textSize(50); // Set text size
-  text(
-    "sausage",
-    sausageboxX + sausagedynamicBoxW / 2,
-    sausageboxY + sausagedynamicBoxH / 2
-  );
-
-  //rect(boxX2, boxY2, boxW2, boxH2);
-
-  if (
-    xsausage >= sausageboxX &&
-    xsausage <= sausageboxX + sausagedynamicBoxW &&
-    ysausage >= sausageboxY &&
-    ysausage <= sausageboxY + sausagedynamicBoxH
-  ) {
-    image(confetti, xsausage, ysausage, windowWidth / 2, windowHeight / 2);
-  } else {
-  }
-
-  // bird
-
-  image(imgbird, xbird, ybird, birdWidth, birdHeight);
-
-  let birddynamicBoxW = 80; // Add some padding around the text
-  let birddynamicBoxH = 45;
-
-  fill(55);
-  rect(birdboxX, birdboxY, birddynamicBoxW, birddynamicBoxH);
-
-  // Add text inside the dynamic box
-  fill(0); // Set text color to white
-  textAlign(CENTER, CENTER); // Center align text
-  textSize(50); // Set text size
-  text("bird", birdboxX + birddynamicBoxW / 2, birdboxY + birddynamicBoxH / 2);
-
-  //rect(boxX2, boxY2, boxW2, boxH2);
-
-  if (
-    xbird >= birdboxX &&
-    xbird <= birdboxX + birddynamicBoxW &&
-    ybird >= birdboxY &&
-    ybird <= birdboxY + birddynamicBoxH
-  ) {
-    image(confetti, xbird, ybird, windowWidth / 2, windowHeight / 2);
-  } else {
-  }
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text(label, x + dynamicBoxW / 2, y + dynamicBoxH / 2);
 }
