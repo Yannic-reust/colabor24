@@ -5,7 +5,7 @@ var boxW = 15;
 var boxH = 13;
 
 let img;
-let imgX = 20;
+let imgX = 10;
 let imgY = 20;
 let imgWidth = 200;
 let imgHeight = 150;
@@ -41,7 +41,8 @@ function draw() {
     imgY >= boxY &&
     imgY <= boxY + dynamicBoxH
   ) {
-    image(img, imgX, imgY, 300, 200);
+    console.log("asd");
+
     //confetti
   } else {
     confetti.resize(0, 0);
