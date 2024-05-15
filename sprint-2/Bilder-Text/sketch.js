@@ -16,6 +16,18 @@ let birdHeight = 150;
 let dynamicBoxW = 150;
 let dynamicBoxH = 45;
 
+let lastDrawTime = 0;
+let drawInterval = 2;
+
+let showConfetti = false;
+
+let confettiPosition = {
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
+};
+
 let confetti;
 let images = [];
 let textPositions = [];
@@ -35,7 +47,7 @@ function setup() {
   imgsausage.resize(300, 200);
   imgbird.resize(300, 200);
   noStroke();
-  frameRate(0.55);
+  frameRate(30);
 
   wW = windowWidth - 300;
   wH = windowHeight - 200;
@@ -55,6 +67,27 @@ function setup() {
 }
 
 function draw() {
+  let currentTime = millis() / 1000; // Convert milliseconds to seconds
+  if (currentTime - lastDrawTime >= drawInterval) {
+    lastDrawTime = currentTime;
+    drawStuff(); // Call the draw function
+  }
+
+  if (showConfetti) {
+    image(
+      confetti,
+      confettiPosition.x,
+      confettiPosition.y,
+      confettiPosition.w,
+      confettiPosition.h
+    );
+    setTimeout(() => {
+      showConfetti = false;
+    }, 2000);
+  }
+}
+
+function drawStuff() {
   background(220);
 
   for (let i = 0; i < images.length; i++) {
@@ -97,13 +130,14 @@ function draw() {
       distance < imgmouse.width / 2 + dynamicBoxW / 2 &&
       distance < imgmouse.height / 2 + dynamicBoxH / 2
     ) {
-      image(
-        confetti,
-        imageObj.x,
-        imageObj.y,
-        windowWidth / 2,
-        windowHeight / 2
-      );
+      showConfetti = true;
+      confettiPosition = {
+        x: imageObj.x,
+        y: imageObj.y,
+        w: windowWidth / 2,
+        h: windowHeight / 2,
+      };
+    } else {
     }
   }
 }
