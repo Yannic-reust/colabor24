@@ -67,10 +67,10 @@ function setup() {
 }
 
 function draw() {
-  let currentTime = millis() / 1000; // Convert milliseconds to seconds
+  let currentTime = millis() / 1000;
   if (currentTime - lastDrawTime >= drawInterval) {
     lastDrawTime = currentTime;
-    drawStuff(); // Call the draw function
+    drawStuff();
   }
 
   if (showConfetti) {
