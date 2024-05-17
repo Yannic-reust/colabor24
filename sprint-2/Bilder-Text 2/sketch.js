@@ -70,7 +70,7 @@ function draw() {
   let currentTime = millis() / 1000; // Convert milliseconds to seconds
   if (currentTime - lastDrawTime >= drawInterval) {
     lastDrawTime = currentTime;
-    drawStuff(); // Call the draw function
+    drawElements(); // Call the draw function
   }
 
   if (showConfetti) {
@@ -87,7 +87,7 @@ function draw() {
   }
 }
 
-function drawStuff() {
+function drawElements() {
   background(220);
 
   for (let i = 0; i < images.length; i++) {
